@@ -28,6 +28,8 @@ protected:
 	void select(sf::Event t_event);
 	void computeSelection();
 
+	void checkMatch();
+
 	int elements[400];
 	sf::RectangleShape elementsShape[400];
 
