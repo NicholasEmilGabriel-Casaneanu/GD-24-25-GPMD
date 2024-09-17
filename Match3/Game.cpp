@@ -146,14 +146,14 @@ void Game::select(sf::Event t_event)
 			{
 				piece1.pieceShape = &elementsShape[i];
 				piece1.pieceIndex = i;
+				break;
 			}
 			else
 			{
 				piece2.pieceShape = &elementsShape[i];
 				piece2.pieceIndex = i;
+				break;
 			}
-
-			break;
 		}
 
 			/*rect1.x < rect2.x + rect2.w &&
@@ -165,10 +165,13 @@ void Game::select(sf::Event t_event)
 
 void Game::computeSelection()
 {
-	if(piece1.pieceShape != nullptr)
+	if(piece1.pieceShape != nullptr && piece2.pieceShape != nullptr)
 	{
-		elements[piece1.pieceIndex] = 0;
+		int number = elements[piece1.pieceIndex];
+		elements[piece1.pieceIndex] = elements[piece2.pieceIndex];
+		elements[piece2.pieceIndex] = number;
 		piece1.pieceShape = nullptr;
+		piece2.pieceShape = nullptr;
 	}
 }
 
