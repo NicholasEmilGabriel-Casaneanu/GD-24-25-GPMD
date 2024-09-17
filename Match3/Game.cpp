@@ -31,15 +31,70 @@ void Game::init()
 {
 	for (int i = 0; i < ELEMENT_COUNT; i++)
 	{
-		elements[i] = 0;
+		elements[i] = rand()%4+1;
 		elementsShape[i].setSize(sf::Vector2f(20.0f, 20.0f));
-		elementsShape[i].setFillColor(sf::Color::Cyan);
 		elementsShape[i].setPosition((i % 20) * 25.0f + 10.0f, (i / 20) * 25.0f + 10.0f);
+
+		switch (elements[i]) {
+		case 0:
+			elementsShape[i].setFillColor(sf::Color::Black);
+			break;
+		case 1:
+			elementsShape[i].setFillColor(sf::Color::Green);
+			break;
+		case 2:
+			elementsShape[i].setFillColor(sf::Color::Yellow);
+			break;
+		case 3:
+			elementsShape[i].setFillColor(sf::Color::Red);
+			break;
+		case 4:
+			elementsShape[i].setFillColor(sf::Color::Magenta);
+			break;
+		default:
+			elementsShape[i].setFillColor(sf::Color::White);
+			break;
+		}
 	}
 }
 
 void Game::update(sf::Time dt)
 {
+	for (int i = ELEMENT_COUNT; i > 0; i--)
+	{
+		if (elements[i] == 0)
+		{
+			if (i >= 20)
+			{
+				elements[i] = elements[i - 20];
+				elements[i - 20] = 0;
+			}
+		}
+	}
+	for (int i = 0; i < ELEMENT_COUNT; i++)
+	{
+		switch (elements[i]) {
+		case 0:
+			elementsShape[i].setFillColor(sf::Color::Black);
+			break;
+		case 1:
+			elementsShape[i].setFillColor(sf::Color::Green);
+			break;
+		case 2:
+			elementsShape[i].setFillColor(sf::Color::Yellow);
+			break;
+		case 3:
+			elementsShape[i].setFillColor(sf::Color::Red);
+			break;
+		case 4:
+			elementsShape[i].setFillColor(sf::Color::Magenta);
+			break;
+		default:
+			elementsShape[i].setFillColor(sf::Color::White);
+			break;
+		}
+	}
+	computeSelection();
 }
 
 void Game::render()
@@ -68,5 +123,50 @@ void Game::processEvents()
 				m_window.close();
 			}
 		}
+		else if (event.type == sf::Event::MouseButtonPressed)
+		{
+			select(event);
+		}
+	}
+}
+
+void Game::select(sf::Event t_event)
+{
+	sf::Vector2f mousepos(t_event.mouseButton.x, t_event.mouseButton.y);
+	if(piece1.pieceShape == nullptr || piece2.pieceShape == nullptr)
+	for (int i = 0; i < ELEMENT_COUNT; i++)
+	{
+		if (mousepos.x < elementsShape[i].getPosition().x + BOX_SIZE &&
+			mousepos.x > elementsShape[i].getPosition().x &&
+			mousepos.y < elementsShape[i].getPosition().y + BOX_SIZE &&
+			mousepos.y > elementsShape[i].getPosition().y)
+		{
+			if (piece1.pieceShape == nullptr)
+			{
+				piece1.pieceShape = &elementsShape[i];
+				piece1.pieceIndex = i;
+			}
+			else
+			{
+				piece2.pieceShape = &elementsShape[i];
+				piece2.pieceIndex = i;
+			}
+
+			break;
+		}
+
+			/*rect1.x < rect2.x + rect2.w &&
+			rect1.x + rect1.w > rect2.x&&
+			rect1.y < rect2.y + rect2.h &&
+			rect1.y + rect1.h > rect2.y*/
+	}
+}
+
+void Game::computeSelection()
+{
+	if(piece1.pieceShape != nullptr)
+	{
+		elements[piece1.pieceIndex] = 0;
+		piece1.pieceShape = nullptr;
 	}
 }
