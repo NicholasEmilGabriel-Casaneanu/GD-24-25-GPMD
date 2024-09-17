@@ -34,6 +34,8 @@ void Game::init()
 		elements[i] = rand()%4+1;
 		elementsShape[i].setSize(sf::Vector2f(20.0f, 20.0f));
 		elementsShape[i].setPosition((i % 20) * 25.0f + 10.0f, (i / 20) * 25.0f + 10.0f);
+		elementsShape[i].setOutlineThickness(2.0f);
+		elementsShape[i].setOutlineColor(sf::Color::Transparent);
 
 		switch (elements[i]) {
 		case 0:
@@ -146,12 +148,14 @@ void Game::select(sf::Event t_event)
 			{
 				piece1.pieceShape = &elementsShape[i];
 				piece1.pieceIndex = i;
+				elementsShape[i].setOutlineColor(sf::Color::White);
 				break;
 			}
 			else
 			{
 				piece2.pieceShape = &elementsShape[i];
 				piece2.pieceIndex = i;
+				elementsShape[i].setOutlineColor(sf::Color::White);
 				break;
 			}
 		}
@@ -167,11 +171,19 @@ void Game::computeSelection()
 {
 	if(piece1.pieceShape != nullptr && piece2.pieceShape != nullptr)
 	{
-		int number = elements[piece1.pieceIndex];
-		elements[piece1.pieceIndex] = elements[piece2.pieceIndex];
-		elements[piece2.pieceIndex] = number;
+		if(piece1.pieceIndex - piece2.pieceIndex == 1 ||
+			piece1.pieceIndex - piece2.pieceIndex == -1 ||
+			piece1.pieceIndex - piece2.pieceIndex == 20 ||
+			piece1.pieceIndex - piece2.pieceIndex == -20)
+		{
+			int number = elements[piece1.pieceIndex];
+			elements[piece1.pieceIndex] = elements[piece2.pieceIndex];
+			elements[piece2.pieceIndex] = number;
+		}
 		piece1.pieceShape = nullptr;
 		piece2.pieceShape = nullptr;
+		elementsShape[piece1.pieceIndex].setOutlineColor(sf::Color::Transparent);
+		elementsShape[piece2.pieceIndex].setOutlineColor(sf::Color::Transparent);
 	}
 }
 
