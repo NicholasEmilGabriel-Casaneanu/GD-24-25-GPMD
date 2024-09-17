@@ -207,4 +207,33 @@ void Game::checkMatch()
 			deleting = true;
 		}
 	}
+	for (int i = 0; i < 20; i++)
+	{
+		for (int j = 2; j < 20; j++)
+		{
+			if (deleting)
+			{
+				if (elements[i + (j * 20)] == current)
+				{
+					elements[i + (j * 20)] = 0;
+				}
+				else
+					deleting = false;
+
+			}
+			if (!deleting)
+			{
+				current = elements[i + (j * 20)];
+				second = elements[i + ((j - 1) * 20)];
+				first = elements[i + ((j - 2) * 20)];
+			}
+			if (first != -1 && first == second && second == current)
+			{
+				elements[i + (j * 20)] = 0;
+				elements[i + ((j - 1) * 20)] = 0;
+				elements[i + ((j - 2) * 20)] = 0;
+				deleting = true;
+			}
+		}
+	}
 }
