@@ -72,7 +72,16 @@ int input5CharsConvertToInt()
 }
 int convertBinarytoDecimal(int binaryNumber)
 {
-	return 0;
+	int number = binaryNumber;
+	int count = 0;
+	int result = 0;
+	while (number > 0)
+	{
+		result += (number % 10) * pow(2, count);
+		number /= 10;
+		count++;
+	}
+	return result;
 }
 void drawRightAngledTriangle()
 {
