@@ -63,14 +63,14 @@ int main()
 	else {
 		std::cout << "no" << std::endl;
 	}
-	if (!isAPalindrome(1213))
+	if (isAPalindrome(1213))
 	{
 		std::cout << "yes" << std::endl;
 	}
 	else {
 		std::cout << "no" << std::endl;
 	}
-	if (!isAPalindrome(1213121))
+	if (isAPalindrome(1213121))
 	{
 		std::cout << "yes" << std::endl;
 	}

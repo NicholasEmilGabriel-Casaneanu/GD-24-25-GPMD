@@ -24,20 +24,24 @@ bool isAPalindrome(int testNumber)
 	int number = testNumber;
 	int half = number / 2;
 	int count = 0;
+	int reverse = 0;
+	int digit;
 	while (number > 0)
 	{
 		number /= 10;
 		count++;
 	}
 	number = testNumber;
-	for (int i = 0; i < count/2; i++)
+	for (int i = 0; i < count; i++)
 	{
-		if (((number / (10 * i)) % 10) != ((number / (10 * (count - i))) % 10))
-		{
-			return false;
-		}
+		digit = number % 10;
+		reverse = (reverse * 10) + digit;
+		number = number / 10;
 	}
-	return true;
+	if (testNumber == reverse)
+		return true;
+	else
+		return false;
 }
 bool isAPrimeNumber(int numbertoTest)
 {
