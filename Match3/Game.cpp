@@ -29,6 +29,8 @@ void Game::run()
 
 void Game::init()
 {
+	m_actionClock.restart();
+
 	for (int i = 0; i < ELEMENT_COUNT; i++)
 	{
 		elements[i] = rand()%4+1;
@@ -62,42 +64,43 @@ void Game::init()
 
 void Game::update(sf::Time dt)
 {
-	checkMatch();
-	for (int i = ELEMENT_COUNT; i > 0; i--)
+	checkGaps();
+	if(m_actionClock.getElapsedTime().asSeconds() >= 0.2f)
 	{
-		if (elements[i] == 0)
+		if (!isDropping)
 		{
-			if (i >= 20)
-			{
-				elements[i] = elements[i - 20];
-				elements[i - 20] = 0;
+			checkMatch();
+			computeSelection();
+		}
+		else
+		{
+			dropBlocks();
+			regenBlocks();
+		}
+		for (int i = 0; i < ELEMENT_COUNT; i++)
+		{
+			switch (elements[i]) {
+			case 0:
+				elementsShape[i].setFillColor(sf::Color::Black);
+				break;
+			case 1:
+				elementsShape[i].setFillColor(sf::Color::Green);
+				break;
+			case 2:
+				elementsShape[i].setFillColor(sf::Color::Yellow);
+				break;
+			case 3:
+				elementsShape[i].setFillColor(sf::Color::Red);
+				break;
+			case 4:
+				elementsShape[i].setFillColor(sf::Color::Magenta);
+				break;
+			default:
+				elementsShape[i].setFillColor(sf::Color::White);
+				break;
 			}
 		}
 	}
-	for (int i = 0; i < ELEMENT_COUNT; i++)
-	{
-		switch (elements[i]) {
-		case 0:
-			elementsShape[i].setFillColor(sf::Color::Black);
-			break;
-		case 1:
-			elementsShape[i].setFillColor(sf::Color::Green);
-			break;
-		case 2:
-			elementsShape[i].setFillColor(sf::Color::Yellow);
-			break;
-		case 3:
-			elementsShape[i].setFillColor(sf::Color::Red);
-			break;
-		case 4:
-			elementsShape[i].setFillColor(sf::Color::Magenta);
-			break;
-		default:
-			elementsShape[i].setFillColor(sf::Color::White);
-			break;
-		}
-	}
-	computeSelection();
 }
 
 void Game::render()
@@ -184,6 +187,56 @@ void Game::computeSelection()
 		piece2.pieceShape = nullptr;
 		elementsShape[piece1.pieceIndex].setOutlineColor(sf::Color::Transparent);
 		elementsShape[piece2.pieceIndex].setOutlineColor(sf::Color::Transparent);
+	}
+}
+
+void Game::checkGaps()
+{
+	bool hasFound{ false };
+	for (int i = ELEMENT_COUNT; i > 19; i--)
+	{
+		if (elements[i] == 0)
+		{
+			if (i >= 20 && elements[i - 20] != 0)
+			{
+				isDropping = true;
+				hasFound = true;
+				break;
+			}
+			else
+				isDropping = false;
+		}
+	}
+	if (!hasFound)
+		isDropping = false;
+}
+
+void Game::dropBlocks()
+{
+	for (int i = ELEMENT_COUNT; i > 0; i--)
+	{
+		if (elements[i] == 0)
+		{
+			if (i >= 20 && elements[i-20] != 0)
+			{
+				elements[i] = elements[i - 20];
+				elements[i - 20] = 0;
+				m_actionClock.restart();
+			}
+		}
+	}
+}
+
+void Game::regenBlocks()
+{
+	bool topSpotsEmpty{ false };
+	for (int i = 0; i < 20; i++)
+	{
+		if (elements[i] == 0)
+		{
+			topSpotsEmpty = true;
+			elements[i] = rand() % 4 + 1;
+		}
 	}
 }
 

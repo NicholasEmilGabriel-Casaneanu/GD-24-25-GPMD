@@ -27,11 +27,18 @@ protected:
 
 	void select(sf::Event t_event);
 	void computeSelection();
+	void checkGaps();
+	void dropBlocks();
+	bool isDropping{ false };
+	void regenBlocks();
 
 	void checkMatch();
 
 	int elements[400];
 	sf::RectangleShape elementsShape[400];
+
+	sf::Time m_actionTime;
+	sf::Clock m_actionClock;
 
 	element piece1;
 	element piece2;
