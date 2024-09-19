@@ -64,6 +64,14 @@ int input5CharsConvertToInt()
 	for (int i = 0; i < 5; i++)
 	{
 		std::cin >> inputChar;
+		if (isdigit(inputChar))
+		{
+			returnInt = (returnInt * 10) + (inputChar - '0');
+		}
+		else {
+			returnInt = 0;
+			break;
+		}
 		//check if its a digit.
 		//do something
 
