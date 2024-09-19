@@ -93,11 +93,35 @@ int convertBinarytoDecimal(int binaryNumber)
 }
 void drawRightAngledTriangle()
 {
-
+	for (int i = 0; i < 4; i++)
+	{
+		for (int j = 0; j < i + 1; j++)
+		{
+				std::cout << "A ";
+		}
+		std::cout << "\n";
+	}
 }
 void drawIsocelesTriangle()
 {
-
+	for (int i = 0; i < 8; i++)
+	{
+		if(i < 4)
+		{
+			for (int j = 0; j < i + 1; j++)
+			{
+				std::cout << "A ";
+			}
+		}
+		else
+		{
+			for (int j = 8; j > i + 1; j--)
+			{
+				std::cout << "A ";
+			}
+		}
+		std::cout << "\n";
+	}
 }
 void drawIsocelesTriangle2()
 {
