@@ -122,4 +122,9 @@ int main()
 	drawRightAngledTriangle();
 	drawIsocelesTriangle();
 
+	int array[10] = { 0,1,2,3,4,5,6,7,8,9 };
+
+	std::cout << "Find Elem in array" << std::endl;
+	std::cout << find(10, array, 3) << "\n";
+
 }

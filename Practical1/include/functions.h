@@ -130,10 +130,24 @@ void drawIsocelesTriangle2()
 
 int find(int size, int arr[], int toFind)
 {
+	for (int i = 0; i < size; i++)
+	{
+		if (arr[i] == toFind)
+		{
+			return i;
+		}
+	}
 	return -1;
 }
 int find2ndLargest(int size, int arr[])
 {
+	int largest = -1;
+	int secondLargest = -1;
+	for (int i = 0; i < size; i++)
+	{
+		if (i == 0)
+			largest = arr[i];
+	}
 	return -1;
 }
 void copyArraytoArray(int size, int arr1[], int arr2[])
