@@ -247,8 +247,14 @@ bool deleteElement(int& size, int& count, int arr[], int deleteIndex)
 }
 int frequencyCount(int size, int arr[], int value)
 {
+	int count = 0;
+	for (int i = 0; i < size; i++)
+	{
+		if (arr[i] == value)
+			count++;
+	}
 
-	return 0;
+	return count;
 }
 int countDuplicates(int size, int arr[])
 {

@@ -167,7 +167,8 @@ int main()
 	}
 
 	std::cout << "\nInsert Element in newArray" << std::endl;
-	insertElement(newArraySize, newArraycount, newArray, 7, 2);
+	insertElement(newArraySize, newArraycount, newArray, 2, 2);
+	insertElement(newArraySize, newArraycount, newArray, 2, 2);
 
 	for (int i = 0; i < sizeof(array1) / sizeof(int); i++)
 	{
@@ -187,5 +188,10 @@ int main()
 	{
 		std::cout << newArray[i] << " ";
 	}
+
+	std::cout << "\Count frequency of 2 in newArray" << std::endl;
+	std::cout<< frequencyCount(newArraySize, newArray, 2) << "\n";
+
+
 
 }
