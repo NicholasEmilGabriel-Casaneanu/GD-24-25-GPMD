@@ -122,9 +122,56 @@ int main()
 	drawRightAngledTriangle();
 	drawIsocelesTriangle();
 
-	int array[10] = { 0,1,2,3,4,5,6,7,8,9 };
+	int array1[10] = { 0,1,2,3,4,5,6,7,8,9 };
+	int array2[10] = { 0,0,0,0,0,0,0,0,0,0 };
 
 	std::cout << "Find Elem in array" << std::endl;
-	std::cout << find(10, array, 3) << "\n";
+	std::cout << find(10, array1, 3) << "\n";
+
+	std::cout << "Find Second Largest in array" << std::endl;
+	std::cout << find2ndLargest(10, array1) << "\n";
+	
+	std::cout << "\nArray1: ";
+	for (int i = 0; i < sizeof(array1) / sizeof(int); i++)
+	{
+		std::cout << array1[i] << " ";
+	}
+	std::cout << "\nArray2: ";
+	for (int i = 0; i < sizeof(array1) / sizeof(int); i++)
+	{
+		std::cout << array2[i] << " ";
+	}
+
+	std::cout << "\n\nCopy array1 to array2" << std::endl;
+	copyArraytoArray(sizeof(array1) / sizeof(int), array1, array2);
+
+	std::cout << "\nArray1: ";
+	for (int i = 0; i < sizeof(array1) / sizeof(int); i++)
+	{
+		std::cout << array1[i] << " ";
+	}
+	std::cout << "\nArray2: ";
+	for (int i = 0; i < sizeof(array1) / sizeof(int); i++)
+	{
+		std::cout << array2[i] << " ";
+	}
+
+	int newArray[10] = { 2,5,3,6,0,0,0,0,0,0 };
+	int newArraycount = 4;
+	int newArraySize = 10;
+
+	std::cout << "\nnewArray: ";
+	for (int i = 0; i < sizeof(array1) / sizeof(int); i++)
+	{
+		std::cout << newArray[i] << " ";
+	}
+
+	std::cout << "\nInsert Element in newArray" << std::endl;
+	insertElement(newArraySize, newArraycount, newArray, 7, 2);
+
+	for (int i = 0; i < sizeof(array1) / sizeof(int); i++)
+	{
+		std::cout << newArray[i] << " ";
+	}
 
 }

@@ -147,15 +147,63 @@ int find2ndLargest(int size, int arr[])
 	{
 		if (i == 0)
 			largest = arr[i];
+		if (arr[i] > largest)
+		{
+			secondLargest = largest;
+			largest = arr[i];
+		}
+	}
+	if (secondLargest > -1)
+	{
+		return secondLargest;
 	}
 	return -1;
 }
 void copyArraytoArray(int size, int arr1[], int arr2[])
 {
-	return;
+	for (int i = 0; i < size; i++)
+	{
+		arr2[i] = arr1[i];
+	}
 }
 bool insertElement(int& size, int& count, int arr[], int elementToInsert, int insertIndex)
 {
+	if (count >= size)
+	{
+		std::cout << "Array is full\n";
+		return false;
+	}
+	if (insertIndex <= count)
+	{
+		int savedValue1 = -1;
+		int savedValue2 = -1;
+		bool reached = false;
+		for (int i = 0; i < count; i++)
+		{
+			if (reached)
+			{
+				if (savedValue2 == -1)
+				{
+					savedValue2 = arr[i];
+					arr[i] = savedValue1;
+					savedValue1 = -1;
+				}
+				else if (savedValue1 == -1)
+				{
+					savedValue1 = arr[i];
+					arr[i] = savedValue2;
+					savedValue2 = -1;
+				}
+			}
+			if (i == insertIndex)
+			{
+				reached = true;
+				savedValue1 = arr[i];
+				arr[i] = elementToInsert;
+				count++;
+			}
+		}
+	}
 
 	return false;
 }
