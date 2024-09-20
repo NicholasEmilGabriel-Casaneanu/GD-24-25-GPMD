@@ -174,4 +174,18 @@ int main()
 		std::cout << newArray[i] << " ";
 	}
 
+	std::cout << "\nnewArray: ";
+	for (int i = 0; i < sizeof(array1) / sizeof(int); i++)
+	{
+		std::cout << newArray[i] << " ";
+	}
+
+	std::cout << "\Delete Element in newArray" << std::endl;
+	deleteElement(newArraySize, newArraycount, newArray, 2);
+
+	for (int i = 0; i < sizeof(array1) / sizeof(int); i++)
+	{
+		std::cout << newArray[i] << " ";
+	}
+
 }

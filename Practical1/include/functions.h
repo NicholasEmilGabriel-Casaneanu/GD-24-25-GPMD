@@ -204,11 +204,44 @@ bool insertElement(int& size, int& count, int arr[], int elementToInsert, int in
 			}
 		}
 	}
+	else {
+		std::cout << "Index out of active array area\n";
+		return false;
+	}
 
-	return false;
+	return true;
 }
 bool deleteElement(int& size, int& count, int arr[], int deleteIndex)
 {
+	if (count == 0)
+	{
+		std::cout << "Array is empty\n";
+		return false;
+	}
+	if (deleteIndex <= count)
+	{
+		int savedValue1 = -1;
+		int savedValue2 = -1;
+		bool reached = false;
+		for (int i = 0; i < count; i++)
+		{
+			if (reached)
+			{
+				arr[i] = arr[i + 1];
+			}
+			if (i == deleteIndex)
+			{
+				reached = true;
+				arr[i] = arr[i+1];
+			}
+		}
+		count--;
+	}
+	else {
+		std::cout << "Index out of active array area\n";
+		return false;
+	}
+
 
 	return true;
 }
