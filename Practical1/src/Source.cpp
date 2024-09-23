@@ -195,4 +195,8 @@ int main()
 	std::cout << "\nCount dupes in newArray" << std::endl;
 	std::cout << countDuplicates(newArraySize, newArray) << "\n";
 
+	std::cout << "\nReverse of newArray" << std::endl;
+	reverse(newArraySize, newArray);
+	std::cout << "\n";
+
 }

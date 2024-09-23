@@ -290,7 +290,10 @@ int countDuplicates(int size, int arr[])
 }
 void reverse(int size, int arr[])
 {
-	return;
+	for (int i = size - 1; i > 0; i--)
+	{
+		std::cout << arr[i] << " ";
+	}
 }
 int rotateLeft(int size, int arr[])
 {
