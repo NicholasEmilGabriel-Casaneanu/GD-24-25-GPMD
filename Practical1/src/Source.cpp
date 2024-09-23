@@ -199,4 +199,21 @@ int main()
 	reverse(newArraySize, newArray);
 	std::cout << "\n";
 
+	int newestArray[5] = { 2,5,3,-1,-1 };
+	int newestArraySize = 3;
+
+	for (int i = 0; i < newestArraySize; i++)
+	{
+		std::cout << newestArray[i] << " ";
+	}
+
+	std::cout << "\nRotate Left newArray" << std::endl;
+	rotateLeft(newestArraySize, newestArray);
+	std::cout << "\n";
+
+	for (int i = 0; i < newestArraySize; i++)
+	{
+		std::cout << newestArray[i] << " ";
+	}
+
 }

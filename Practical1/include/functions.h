@@ -297,6 +297,22 @@ void reverse(int size, int arr[])
 }
 int rotateLeft(int size, int arr[])
 {
+	int savedValue = -1;
+	for (int i = 0; i < size; i++)
+	{
+		if (i == 0)
+		{
+			savedValue = arr[i];
+		}
+		if (i == size - 1)
+		{
+			arr[i] = savedValue;
+		}
+		else
+		{
+			arr[i] = arr[i + 1];
+		}
+	}
 	return -1;
 }
 bool twoMovies(int flightLength, int movieLengths[], int size)
