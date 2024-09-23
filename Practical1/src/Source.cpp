@@ -181,7 +181,7 @@ int main()
 		std::cout << newArray[i] << " ";
 	}
 
-	std::cout << "\Delete Element in newArray" << std::endl;
+	std::cout << "\nDelete Element in newArray" << std::endl;
 	deleteElement(newArraySize, newArraycount, newArray, 2);
 
 	for (int i = 0; i < sizeof(array1) / sizeof(int); i++)
@@ -189,9 +189,10 @@ int main()
 		std::cout << newArray[i] << " ";
 	}
 
-	std::cout << "\Count frequency of 2 in newArray" << std::endl;
+	std::cout << "\nCount frequency of 2 in newArray" << std::endl;
 	std::cout<< frequencyCount(newArraySize, newArray, 2) << "\n";
 
-
+	std::cout << "\nCount dupes in newArray" << std::endl;
+	std::cout << countDuplicates(newArraySize, newArray) << "\n";
 
 }

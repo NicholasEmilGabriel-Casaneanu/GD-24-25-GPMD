@@ -258,8 +258,35 @@ int frequencyCount(int size, int arr[], int value)
 }
 int countDuplicates(int size, int arr[])
 {
+	int dupeArray[]{-1,-1,-1,-1,-1,-1,-1,-1,-1,-1};
+	int dupeArraySize = 0;
+	int dupeCount = 0;
+	bool foundMatch = false;
+	for (int i = 0; i < size; i++)
+	{
+		for (int j = 0; j < dupeArraySize; j++)
+		{
+			if (arr[i] == dupeArray[j])
+			{
+				dupeCount++;
+				foundMatch = true;
+			}
+		}
+		if (i == 0)
+		{
+			dupeArray[dupeArraySize] = arr[i];
+			dupeArraySize++;
+		}
+		else if (foundMatch) {
+			foundMatch = false;
+		}
+		else {
+			dupeArray[dupeArraySize] = arr[i];
+			dupeArraySize++;
+		}
 
-	return 0;
+	}
+	return dupeCount;
 }
 void reverse(int size, int arr[])
 {
