@@ -317,9 +317,38 @@ int rotateLeft(int size, int arr[])
 }
 bool twoMovies(int flightLength, int movieLengths[], int size)
 {
+	for (int firstMovie = 0; firstMovie < size; firstMovie++)
+	{
+		for (int secondMovie = 0; secondMovie < size; secondMovie++)
+		{
+			if (firstMovie != secondMovie)
+			{
+				if ((movieLengths[firstMovie] +
+					movieLengths[secondMovie]) == flightLength)
+					return true;
+			}
+		}
+	}
 	return false;
 }
 int wordCounter(int size, char characters[])
 {
-	return 0;
+	bool isWord = false;
+	int wordCounter = 0;
+	for (int i = 0; i < size; i++)
+	{
+		if ((characters[i] >= 65 && characters[i] <= 90) ||
+			(characters[i] >= 97 && characters[i] <= 122))
+		{
+			if (!isWord)
+			{
+				isWord = true;
+				wordCounter++;
+			}
+		}
+		else
+			if (isWord)
+				isWord = false;
+	}
+	return wordCounter;
 }

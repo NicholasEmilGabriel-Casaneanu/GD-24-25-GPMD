@@ -201,13 +201,11 @@ int main()
 
 	int newestArray[5] = { 2,5,3,-1,-1 };
 	int newestArraySize = 3;
-
+	std::cout << "\nRotate Left newArray" << std::endl;
 	for (int i = 0; i < newestArraySize; i++)
 	{
 		std::cout << newestArray[i] << " ";
 	}
-
-	std::cout << "\nRotate Left newArray" << std::endl;
 	rotateLeft(newestArraySize, newestArray);
 	std::cout << "\n";
 
@@ -215,5 +213,33 @@ int main()
 	{
 		std::cout << newestArray[i] << " ";
 	}
+
+	int movies[10] = { 12,67,53,48,70,37,65,0,0,0 };
+
+	std::cout << "\nTwo Movies" << std::endl;
+	if (twoMovies(int(120),
+		movies,
+		int(7))) {
+		std::cout << "\nTwo movies found";
+	}
+	else {
+		std::cout << "\nTwo movies not found";
+	}
+	std::cout << "\n";
+
+	std::cout << "\nWord Counter" << std::endl;
+	std::cout << "\n";
+	char charArray[20]{ 't','h','i','s',' ','i','s',' ',
+	'a',' ','c','h','a','r',' ','a','r','r','a','y' };
+
+	for (	int i = 0;
+			i < (sizeof(charArray) / sizeof(char));
+			i++)
+	{
+		std::cout << charArray[i] << " ";
+	}
+	std::cout << "\nWords: " 
+		<< wordCounter(20
+			,charArray);
 
 }
