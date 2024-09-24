@@ -352,3 +352,16 @@ int wordCounter(int size, char characters[])
 	}
 	return wordCounter;
 }
+
+void extraTriangle()
+{
+	for (int i = 0; i < 7; i++)
+	{
+		for (int j = i % 5; j > 0; j--)
+		{
+			std::cout << "A ";
+		}
+
+		std::cout << "\n";
+	}
+}

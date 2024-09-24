@@ -242,4 +242,6 @@ int main()
 		<< wordCounter(20
 			,charArray);
 
+	extraTriangle();
+
 }
