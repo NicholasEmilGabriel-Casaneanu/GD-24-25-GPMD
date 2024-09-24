@@ -2,6 +2,7 @@
 // dont use cout in any of the functions apart from PrintArray();
 int ReplaceWithMinusOne(int array[4][6])
 {
+	std::cout << "\n Replacing With Minus One.\n";
 	bool deleting{ false };
 	int deletingNumber{ 0 };
 	int score{ 0 };
@@ -71,6 +72,7 @@ int ReplaceWithMinusOne(int array[4][6])
 }
 void FallDownAndReplace(int array[4][6])
 {
+	std::cout << "\n Fall Down And Replace.\n";
 	for (int i = 1; i < 4; i++)
 	{
 		for (int j = 0; j < 6; j++)
@@ -80,15 +82,25 @@ void FallDownAndReplace(int array[4][6])
 				for (int k = 0; k <= i; k++)
 				{
 					if ((i - 1 - k) < 0)
-						array[i - k][j] = 0;
+						array[i - k][j] = -2;
 					else
 						array[i- k][j] = array[i - 1 -k][j];
 				}
 		}
 	}
+	for (int i = 0; i < 4; i++)
+	{
+		for (int j = 0; j < 6; j++)
+		{
+
+			if (array[i][j] == -2)
+				array[i][j] = rand() % 9 + 1;
+		}
+	}
 }
 void PrintArray(int array[4][6])
 {
+	std::cout << "\n PrintArray:\n";
 	for (int i = 0; i < 4; i++)
 	{
 		for (int j = 0; j < 6; j++)
