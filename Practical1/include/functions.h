@@ -355,9 +355,10 @@ int wordCounter(int size, char characters[])
 
 void extraTriangle()
 {
-	for (int i = 0; i < 7; i++)
+	std::cout << "\n\nBONUS QUESTION:\n";
+	for (int i = -4; i < 4; i++)
 	{
-		for (int j = i % 5; j > 0; j--)
+		for (int j = abs(i) % 5; j < 4; j++)
 		{
 			std::cout << "A ";
 		}
