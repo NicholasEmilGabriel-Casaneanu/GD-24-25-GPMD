@@ -11,9 +11,10 @@ int main()
 	PrintArray(array);
 	int score = ReplaceWithMinusOne(array);
 	std::cout << score << "\n";
-	FallDownAndReplace(array);
 	PrintArray(array);
 	std::cout << score << "\n";
+	FallDownAndReplace(array);
+	PrintArray(array);
 		
 	
 
