@@ -93,9 +93,9 @@ void FindAllVariablesInScope(char variables[1000], char code[1000], int lineNumb
 		}
 		else
 		{
-			if (code[codeIndex] == 123)
+			if (code[codeIndex] == '{')
 				scope++;
-			if (code[codeIndex] == 125)
+			if (code[codeIndex] == '}')
 			{
 				if (scope > 0)
 				{
@@ -110,7 +110,7 @@ void FindAllVariablesInScope(char variables[1000], char code[1000], int lineNumb
 			}
 			if (recording && 
 				!(
-					(code[codeIndex] < 97 || code[codeIndex] > 90) && (code[codeIndex] < 48 || code[codeIndex] > 57) && (code[codeIndex] < 97 || code[codeIndex] > 122) && (code[codeIndex] < 64)
+					(code[codeIndex] < 'a' || code[codeIndex] > 'Z') && (code[codeIndex] < '0' || code[codeIndex] > '9') && (code[codeIndex] < 'a' || code[codeIndex] > 'z') && (code[codeIndex] < '@')
 				))
 			{
 				variables[variablesCounter] = code[codeIndex];
@@ -129,7 +129,7 @@ void FindAllVariablesInScope(char variables[1000], char code[1000], int lineNumb
 			}
 			if (((code[codeIndex] == 116 && code[codeIndex - 1] == 110 && code[codeIndex - 2] == 105) ||
 				(code[codeIndex] == 114 && code[codeIndex - 1] == 97 && code[codeIndex - 2] == 104 && code[codeIndex - 3] == 99)) &&
-				(scope == 1 || (scope > 1 && closeCounter == 0)))
+				(scope == 1 || (scope > 1 && closeCounter == 0) || scope == 0))
 			{
 				recording = true;
 				codeIndex++;
@@ -138,10 +138,10 @@ void FindAllVariablesInScope(char variables[1000], char code[1000], int lineNumb
 			{
 				currentLine++;
 			}
-			if (currentLine > lineNumber)
+			/*if (currentLine > lineNumber)
 			{
 				done = true;
-			}
+			}*/
 
 		}
 		if (codeIndex < 1000)
