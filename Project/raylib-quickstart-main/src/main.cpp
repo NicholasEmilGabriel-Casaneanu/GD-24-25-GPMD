@@ -29,7 +29,7 @@ For a C++ project simply rename the file to .cpp and re-run the build script
 #define RAYGUI_IMPLEMENTATION
 #include "raygui.h"
 
-#define MAX_RECTS 1000
+#define MAX_RECTS 100
 
 typedef struct Rect {
     Vector2 position;
@@ -37,6 +37,11 @@ typedef struct Rect {
     float height;
     Color color;
 } Rect;
+
+enum Tools {
+    Draw = 0,
+    Pick = 1
+};
 
 int main() {
     // Initialization
@@ -46,10 +51,22 @@ int main() {
 
     // Variables
     Rect rectangles[MAX_RECTS];
-    int rectCount = 0;
+    int rectanglesData[MAX_RECTS]; // a way to store the index of pallete[] of a color of a rectangle, to use for save/load
+    int rectCount = 0; // unused as of now
     Color currentColor = BLACK;  // Default color for drawing rectangles
     Vector2 rectStart = { 0 };
     bool drawing = false;
+    Tools tool = Tools::Draw;
+
+    for (int i = 0; i < MAX_RECTS; i++)
+    {
+        rectangles[i].position.x = 200 + (i % 10) * 40;
+        rectangles[i].position.y = 100 + (i / 10) * 40;
+        rectangles[i].width = 40;
+        rectangles[i].height = 40;
+        rectangles[i].color = BLACK;
+        rectanglesData[i] = 0;
+    }
 
     // Define a simple color palette
     Color palette[] = { BLACK, RED, GREEN, BLUE, YELLOW, ORANGE, PURPLE, MAROON };
@@ -57,6 +74,7 @@ int main() {
     int selectedColor = 0;
 
     SetTargetFPS(60);
+    bool showMessageBox = false;
 
     // Main game loop
     while (!WindowShouldClose()) {
@@ -64,15 +82,31 @@ int main() {
         if (IsMouseButtonDown(MOUSE_LEFT_BUTTON)) {
             // Start a new rectangle
             rectStart = GetMousePosition();
-            if (rectCount < MAX_RECTS) {
-                Vector2 rectEnd = GetMousePosition();
-
-                rectangles[rectCount].position.x = rectStart.x;
-                rectangles[rectCount].position.y = rectStart.y;
-                rectangles[rectCount].width = 10;
-                rectangles[rectCount].height = 10;
-                rectangles[rectCount].color = currentColor;
-                rectCount++;
+            Vector2 rectEnd = GetMousePosition();
+            for (int i = 0; i < MAX_RECTS; i++)
+            {
+                Rectangle curRect;
+                curRect.x = rectangles[i].position.x;
+                curRect.y = rectangles[i].position.y;
+                curRect.width = rectangles[i].width;
+                curRect.height = rectangles[i].height;
+                if(tool == Tools::Draw)
+                {
+                    
+                    if (CheckCollisionPointRec(rectStart, curRect))
+                    {
+                        rectangles[i].color = currentColor;
+                        rectanglesData[i] = selectedColor;
+                    }
+                }
+                else if (tool == Tools::Pick)
+                {
+                    if (CheckCollisionPointRec(rectStart, curRect))
+                    {
+                        selectedColor = rectanglesData[i];
+                        currentColor = palette[selectedColor];
+                    }
+                }
             }
         }
 
@@ -99,8 +133,28 @@ int main() {
             }
         }
 
+        // Draw tool buttons
+        Rectangle toolButtons;
+        toolButtons.x = 20;
+        toolButtons.y = 20;
+        toolButtons.width = 32;
+        toolButtons.height = 32;
+        if (GuiButton(toolButtons, "#23#") == 1)
+        {
+            tool = Tools::Draw;
+        }
+
+        toolButtons.x = 52;
+        toolButtons.y = 20;
+        toolButtons.width = 32;
+        toolButtons.height = 32;
+        if (GuiButton(toolButtons, "#27#") == 1)
+        {
+            tool = Tools::Pick;
+        }
+
         // Draw all stored rectangles
-        for (int i = 0; i < rectCount; i++) {
+        for (int i = 0; i < MAX_RECTS; i++) {
             DrawRectangleRec({ rectangles[i].position.x, rectangles[i].position.y, rectangles[i].width, rectangles[i].height }, rectangles[i].color);
         }
 
