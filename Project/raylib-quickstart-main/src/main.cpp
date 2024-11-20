@@ -31,6 +31,7 @@ For a C++ project simply rename the file to .cpp and re-run the build script
 #include<iostream>
 #include<fstream>
 #include<string>
+#include<stdbool.h>
 
 #define MAX_RECTS 100
 
@@ -41,10 +42,23 @@ typedef struct Rect {
     Color color;
 } Rect;
 
+typedef struct SquareTool {
+    int indexMD;
+    int indexMU;
+    int leftOffset;
+    int rightLimit;
+    int upOffset;
+    int downLimit;
+};
+
 enum Tools {
     Draw = 0,
-    Pick = 1
+    Pick = 1,
+    Erase = 2,
+    Square = 3
 };
+
+bool isMBPressed = false;
 
 int main() {
     // Initialization
@@ -61,10 +75,14 @@ int main() {
     bool drawing = false;
     Tools tool = Tools::Draw;
 
+    //Save and Load
     std::ofstream saveFile;
     std::ifstream loadFile;
     std::string input;
 
+    //Square Tool
+    SquareTool SquareToolData;
+    SquareToolData.indexMD = -1;
 
     for (int i = 0; i < MAX_RECTS; i++)
     {
@@ -77,12 +95,13 @@ int main() {
     }
 
     // Define a simple color palette
-    Color palette[] = { BLACK, RED, GREEN, BLUE, YELLOW, ORANGE, PURPLE, MAROON };
+    Color palette[] = { BLACK, RED, GREEN, BLUE, YELLOW, ORANGE, PURPLE, MAROON, WHITE };
     int paletteSize = sizeof(palette) / sizeof(palette[0]);
     int selectedColor = 0;
 
     SetTargetFPS(60);
     bool showMessageBox = false;
+
 
     // Main game loop
     while (!WindowShouldClose()) {
@@ -115,9 +134,95 @@ int main() {
                         currentColor = palette[selectedColor];
                     }
                 }
+                else if (tool == Tools::Erase)
+                {
+                    if (CheckCollisionPointRec(rectStart, curRect))
+                    {
+                        rectangles[i].color = BLACK;
+                        rectanglesData[i] = 0;
+                    }
+                }
+            }
+        }
+        if(SquareToolData.indexMD == -1)
+        {
+            if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
+                // Start a new rectangle
+                rectStart = GetMousePosition();
+                for (int i = 0; i < MAX_RECTS; i++)
+                {
+                    Rectangle curRect;
+                    curRect.x = rectangles[i].position.x;
+                    curRect.y = rectangles[i].position.y;
+                    curRect.width = rectangles[i].width;
+                    curRect.height = rectangles[i].height;
+                    if (tool == Tools::Square)
+                    {
+                        if (CheckCollisionPointRec(rectStart, curRect))
+                        {
+                            SquareToolData.indexMD = i;
+                            std::cout << SquareToolData.indexMD;
+                        }
+                    }
+                }
+            }
+        }
+        if (IsMouseButtonUp) {
+            Vector2 rectEnd = GetMousePosition();
+            for (int i = 0; i < MAX_RECTS; i++)
+            {
+                Rectangle curRect;
+                curRect.x = rectangles[i].position.x;
+                curRect.y = rectangles[i].position.y;
+                curRect.width = rectangles[i].width;
+                curRect.height = rectangles[i].height;
+                if (tool == Tools::Square && SquareToolData.indexMD != -1)
+                {
+                    if (CheckCollisionPointRec(rectEnd, curRect))
+                    {
+
+
+                        isMBPressed = false;
+                        SquareToolData.indexMU = i;
+
+                        if (SquareToolData.indexMD % 10 < SquareToolData.indexMU % 10)
+                        {
+                            SquareToolData.leftOffset = SquareToolData.indexMD % 10;
+                            SquareToolData.rightLimit = SquareToolData.indexMU % 10;
+                        }
+                        else
+                        {
+                            SquareToolData.leftOffset = SquareToolData.indexMU % 10;
+                            SquareToolData.rightLimit = SquareToolData.indexMD % 10;
+                        }
+
+                        if (SquareToolData.indexMD / 10 < SquareToolData.indexMU / 10)
+                        {
+                            SquareToolData.upOffset = SquareToolData.indexMD / 10;
+                            SquareToolData.downLimit = SquareToolData.indexMU / 10;
+                        }
+                        else
+                        {
+                            SquareToolData.upOffset = SquareToolData.indexMU / 10;
+                            SquareToolData.downLimit = SquareToolData.indexMD / 10;
+                        }
+
+                        for (int i = 0; i < MAX_RECTS; i++)
+                        {
+                            if (i % 10 >= SquareToolData.leftOffset && i % 10 <= SquareToolData.rightLimit
+                                && i / 10 >= SquareToolData.upOffset && i / 10 <= SquareToolData.downLimit)
+                            {
+                                rectangles[i].color = currentColor;
+                                rectanglesData[i] = selectedColor;
+                            }
+                        }
+                        SquareToolData.indexMD = -1;
+                    }
+                }
             }
         }
 
+        std::cout << SquareToolData.indexMD;
 
         // Change color based on palette selection
         for (int i = 0; i < paletteSize; i++) {
@@ -156,11 +261,33 @@ int main() {
         toolButtons.y = 20;
         toolButtons.width = 32;
         toolButtons.height = 32;
+        if (GuiButton(toolButtons, "#28#") == 1)
+        {
+            //Eraser
+            tool = Tools::Erase;
+        }
+
+        toolButtons.x = 20;
+        toolButtons.y = 52;
+        toolButtons.width = 32;
+        toolButtons.height = 32;
+        if (GuiButton(toolButtons, "#80#") == 1)
+        {
+            //Square
+            tool = Tools::Square;
+        }
+
+        toolButtons.x = 52;
+        toolButtons.y = 52;
+        toolButtons.width = 32;
+        toolButtons.height = 32;
         if (GuiButton(toolButtons, "#27#") == 1)
         {
+            //ColorPicker
             tool = Tools::Pick;
         }
 
+        //Save
         toolButtons.x = 20;
         toolButtons.y = 84;
         toolButtons.width = 32;
@@ -174,6 +301,8 @@ int main() {
             }
             saveFile.close();
         }
+
+        //Load
         toolButtons.x = 52;
         toolButtons.y = 84;
         toolButtons.width = 32;
