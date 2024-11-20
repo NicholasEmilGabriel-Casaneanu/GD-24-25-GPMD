@@ -142,32 +142,63 @@ int main() {
                         rectanglesData[i] = 0;
                     }
                 }
-            }
-        }
-        if(SquareToolData.indexMD == -1)
-        {
-            if (IsMouseButtonPressed(MOUSE_LEFT_BUTTON)) {
-                // Start a new rectangle
-                rectStart = GetMousePosition();
-                for (int i = 0; i < MAX_RECTS; i++)
+                else if (tool == Tools::Square)
                 {
-                    Rectangle curRect;
-                    curRect.x = rectangles[i].position.x;
-                    curRect.y = rectangles[i].position.y;
-                    curRect.width = rectangles[i].width;
-                    curRect.height = rectangles[i].height;
-                    if (tool == Tools::Square)
+                    if (CheckCollisionPointRec(rectStart, curRect))
                     {
-                        if (CheckCollisionPointRec(rectStart, curRect))
+                        if(!isMBPressed)
                         {
                             SquareToolData.indexMD = i;
                             std::cout << SquareToolData.indexMD;
+                            isMBPressed = true;
+                        }
+                        else
+                        {
+                            SquareToolData.indexMU = i;
+                            if (SquareToolData.indexMD % 10 < SquareToolData.indexMU % 10)
+                            {
+                                SquareToolData.leftOffset = SquareToolData.indexMD % 10;
+                                SquareToolData.rightLimit = SquareToolData.indexMU % 10;
+                            }
+                            else
+                            {
+                                SquareToolData.leftOffset = SquareToolData.indexMU % 10;
+                                SquareToolData.rightLimit = SquareToolData.indexMD % 10;
+                            }
+
+                            if (SquareToolData.indexMD / 10 < SquareToolData.indexMU / 10)
+                            {
+                                SquareToolData.upOffset = SquareToolData.indexMD / 10;
+                                SquareToolData.downLimit = SquareToolData.indexMU / 10;
+                            }
+                            else
+                            {
+                                SquareToolData.upOffset = SquareToolData.indexMU / 10;
+                                SquareToolData.downLimit = SquareToolData.indexMD / 10;
+                            }
+
+                            for (int i = 0; i < MAX_RECTS; i++)
+                            {
+                                if (i % 10 >= SquareToolData.leftOffset && i % 10 <= SquareToolData.rightLimit
+                                    && i / 10 >= SquareToolData.upOffset && i / 10 <= SquareToolData.downLimit)
+                                {
+                                    rectangles[i].color = currentColor;
+                                    rectanglesData[i] = selectedColor;
+                                }
+                            }
                         }
                     }
                 }
             }
         }
-        if (IsMouseButtonUp) {
+        if (IsMouseButtonUp(MOUSE_BUTTON_LEFT))
+        {
+            if (isMBPressed)
+            {
+                isMBPressed = false;
+            }
+        }
+        /*if (IsMouseButtonUp) {
             Vector2 rectEnd = GetMousePosition();
             for (int i = 0; i < MAX_RECTS; i++)
             {
@@ -220,7 +251,7 @@ int main() {
                     }
                 }
             }
-        }
+        }*/
 
         std::cout << SquareToolData.indexMD;
 
