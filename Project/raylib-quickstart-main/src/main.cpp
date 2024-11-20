@@ -28,6 +28,9 @@ For a C++ project simply rename the file to .cpp and re-run the build script
 #include "raylib.h"
 #define RAYGUI_IMPLEMENTATION
 #include "raygui.h"
+#include<iostream>
+#include<fstream>
+#include<string>
 
 #define MAX_RECTS 100
 
@@ -51,12 +54,17 @@ int main() {
 
     // Variables
     Rect rectangles[MAX_RECTS];
-    int rectanglesData[MAX_RECTS]; // a way to store the index of pallete[] of a color of a rectangle, to use for save/load
+    int rectanglesData[MAX_RECTS];
     int rectCount = 0; // unused as of now
     Color currentColor = BLACK;  // Default color for drawing rectangles
     Vector2 rectStart = { 0 };
     bool drawing = false;
     Tools tool = Tools::Draw;
+
+    std::ofstream saveFile;
+    std::ifstream loadFile;
+    std::string input;
+
 
     for (int i = 0; i < MAX_RECTS; i++)
     {
@@ -151,6 +159,44 @@ int main() {
         if (GuiButton(toolButtons, "#27#") == 1)
         {
             tool = Tools::Pick;
+        }
+
+        toolButtons.x = 20;
+        toolButtons.y = 84;
+        toolButtons.width = 32;
+        toolButtons.height = 32;
+        if (GuiButton(toolButtons, "#2#") == 1)
+        {
+            saveFile.open("src/savefile.txt");
+            for (int i = 0; i < MAX_RECTS; i++)
+            {
+                saveFile << rectanglesData[i] << "\n";
+            }
+            saveFile.close();
+        }
+        toolButtons.x = 52;
+        toolButtons.y = 84;
+        toolButtons.width = 32;
+        toolButtons.height = 32;
+        if (GuiButton(toolButtons, "#1#") == 1)
+        {
+            loadFile.open("src/savefile.txt");
+            int i = 0;
+            int value = 0;
+            while (i < MAX_RECTS)
+            {
+                loadFile >> value;
+                rectanglesData[i] = value;
+                loadFile.ignore(SIZE_MAX, '\n');
+                i++;
+                std::cout << value;
+            }
+
+            for (int i = 0; i < MAX_RECTS; i++) {
+                rectangles[i].color = palette[rectanglesData[i]];
+            }
+
+            loadFile.close();
         }
 
         // Draw all stored rectangles
